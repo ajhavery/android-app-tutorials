@@ -1,13 +1,9 @@
 package com.example.apptutorial
 
-import android.animation.ValueAnimator
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.widget.TextView
 import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieDrawable
 import com.example.apptutorial.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -20,9 +16,11 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
 
+        lottieAnimView = activityMainBinding.lottieAnimationView
+
         lottieAnimView.setAnimation(R.raw.customer_review)
+        lottieAnimView.repeatCount = LottieDrawable.INFINITE
         lottieAnimView.playAnimation()
-        lottieAnimView.repeatCount = ValueAnimator.INFINITE
 
     }
 }
