@@ -3,74 +3,58 @@ package com.example.apptutorial
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.ListView
+import android.widget.Spinner
+import android.widget.SpinnerAdapter
 import com.example.apptutorial.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var activityMainBinding: ActivityMainBinding
     private lateinit var listView: ListView
-    private lateinit var userArrayList: ArrayList<User>
+    private lateinit var spinner: Spinner
+    private lateinit var autoCompleteTextView: AutoCompleteTextView
+    private lateinit var arrListView: ArrayList<String>
+    private lateinit var arrDropDownOptions: ArrayList<String>
+    private lateinit var arrAutoComplete: ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
 
-        // Array = fixed size // Array list = mutable size
-        val imageId = intArrayOf(
-            R.drawable.profile_1, R.drawable.profile_2, R.drawable.profile_3,
-            R.drawable.profile_4, R.drawable.profile_5, R.drawable.profile_6,
-            R.drawable.profile_7, R.drawable.profile_8
-        )
-        val name = arrayOf("Ram", "Shyam", "Sita", "Gita", "Lakshman", "Ramesh", "Suresh")
-        val lastMessage = arrayOf(
-            "Hi, How are you?",
-            "Call me asap.",
-            "Today is a good day!",
-            "Looking forward to meet you!",
-            "Fine by me.",
-            "Lets evaluate!",
-            "Awesome!"
-        )
-        val lastMsgTime =
-            arrayOf("8:00PM", "7:30AM", "12:15PM", "5:30PM", "11:15PM", "10:30PM", "9:11AM")
-        val phoneNo = arrayOf(
-            "9811641234", "9811641235", "9811641236", "9811641237",
-            "9811641238", "9811641239", "9811641231"
-        )
-        val country = arrayOf(
-            "India", "India", "USA", "UK",
-            "India", "Bangladesh", "Nepal"
-        )
+        // ListView
+        arrListView = arrayListOf("Ram", "Shyam", "Sita", "Gita")
 
-        userArrayList = ArrayList()
-        for (i in name.indices) {
-            val user =
-                User(name[i], lastMessage[i], lastMsgTime[i], phoneNo[i], country[i], imageId[i])
-            userArrayList.add(user)
-        }
+        val listAdapter: ArrayAdapter<String> =
+            ArrayAdapter(this, android.R.layout.simple_list_item_1, arrListView)
 
-        // Array Adapter sets the items of array to the ListView
         listView = activityMainBinding.listView
-        listView.adapter = UserAdapter(this, userArrayList)
-        listView.isClickable = true
+        listView.adapter = listAdapter
 
-        // list view item click listener
-        listView.setOnItemClickListener { parent, view, position, id ->
-            val name = name[position]
-            val phone = phoneNo[position]
-            val country = country[position]
-            val imageId = imageId[position]
+        // Spinner
+        arrDropDownOptions = arrayListOf(
+            "Aadhaar Card", "PAN Card", "Voter ID",
+            "Passport", "Ration Card", "Driving License"
+        )
 
-            val intent = Intent(this, UserActivity::class.java)
-            intent.putExtra("name", name)
-            intent.putExtra("phone", phone)
-            intent.putExtra("country", country)
-            intent.putExtra("imageId", imageId)
+        val spinnerAdapter: ArrayAdapter<String> =
+            ArrayAdapter(this, android.R.layout.simple_list_item_1, arrDropDownOptions)
 
-            startActivity(intent)
-        }
+        spinner = activityMainBinding.spinner
+        spinner.adapter = spinnerAdapter
+
+        // Auto complete text
+        arrAutoComplete = arrayListOf("C", "C++", "Java", "Python", "Php")
+
+        val autoCompleteAdapter: ArrayAdapter<String> =
+            ArrayAdapter(this, android.R.layout.simple_list_item_1, arrAutoComplete)
+
+        autoCompleteTextView = activityMainBinding.acptTextview
+        autoCompleteTextView.setAdapter(autoCompleteAdapter)
+        autoCompleteTextView.threshold = 1 // characters to type before showing suggestions
 
     }
 }
